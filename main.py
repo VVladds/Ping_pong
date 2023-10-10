@@ -7,10 +7,7 @@ display.set_caption('Shooter')
 background = transform.scale(image.load('354282-admin.jpg'), (700,500))
 background.set_alpha(45)
 
-'''mixer.init()
-mixer.music.load('space.ogg')
-mixer.music.play()
-fire = mixer.Sound('fire.ogg')'''
+
 
 font.init()
 
@@ -70,21 +67,22 @@ class Bullet(GameSprite):
 hero = Player('fffs.png', 20, 10, 10,0)
 hero2 = Player('fffs.png', 650, 10, 10,1)
 
-ball = Bullet('ball.png',100,100,5)
+ball = Bullet('ball.png',100,100,10)
 Players = list()
 Players.append(hero)
 Players.append(hero2)
 
 
-win = font.Font(None,70).render('YOU WIN!', True,(255,215,0))
-lose = font.Font(None,70).render('YOU LOSE!', True,(255,215,0))
+win = font.Font(None,70).render('YOU WIN!', True,(255,0,0))
+lose = font.Font(None,70).render('PLAYER_1 LOSE!', True,(255,0,0))
+lose2 = font.Font(None,70).render('PLAYER_2 LOSE!', True,(255,0,0))
 
 while game:
     while finish != True:
 
         for e in event.get():
-                if e.type == QUIT:
-                    game = False
+            if e.type == QUIT:
+                game = False
         clock = time.Clock()
         window.blit(background,(0,0))
         ball.reset()
@@ -98,13 +96,18 @@ while game:
 
         if ball.rect.x <=0:
             finish = True
-            window.blit(lose,(0,0))
-
-
-
-
+            window.blit(lose,(150,200))
+        if ball.rect.x >=675:
+            finish = True
+            window.blit(lose2,(150,200))
         clock.tick(FPS)
         display.update()
+
+    for e in event.get():
+        if e.type == QUIT:
+            game = False
+    clock.tick(FPS)
+    display.update()
 
 
 
