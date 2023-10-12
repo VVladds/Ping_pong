@@ -1,0 +1,111 @@
+from pygame import *
+from random import *
+
+
+window = display.set_mode((1920,1080), FULLSCREEN)
+display.set_caption('BUlletHElls')
+
+background = transform.scale(image.load('final_background.jpg'), (1920,1080))
+#window.minimize()
+
+
+font.init()
+
+game = True
+finish = False
+
+class GameSprite(sprite.Sprite):
+    def __init__(self,imag,x,y,speed):
+        self.image = transform.scale(image.load(imag),(100,100))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.speed = speed
+    def reset(self):
+        window.blit(self.image,(self.rect.x, self.rect.y))
+
+class Player(GameSprite):
+    def __init__(self,imag,x,y,speed):
+        super().__init__(imag,x,y,speed)
+
+    def update(self):
+        keys_pressed = key.get_pressed()
+
+                
+
+
+#mouse.get_pos()
+
+
+
+clock = time.Clock()
+FPS = 60
+        
+class Bullet(GameSprite):
+    def __init__(self,imag,x,y,speed):
+        super().__init__(imag,x,y,speed)  
+        self.image = transform.scale(image.load(imag),(25,25))
+        self.speed_x = speed
+        self.speed_y = speed
+    def update(self):
+        self.rect.y -= self.speed_y
+        self.rect.x -= self.speed_x
+        if self.rect.y <= 0 or self.rect.y >=475:
+            self.speed_y*=-1
+        
+
+
+mouse.set_visible(False)
+'''
+hero2 = Player('fffs.png', 650, 10, 10,1)
+
+ball = Bullet('ball.png',100,100,10)
+Players = list()
+Players.append(hero)
+Players.append(hero2)'''
+
+
+win = font.Font(None,70).render('YOU WIN!', True,(255,0,0))
+lose = font.Font(None,70).render('PLAYER_1 LOSE!', True,(255,0,0))
+lose2 = font.Font(None,70).render('PLAYER_2 LOSE!', True,(255,0,0))
+hero = Player('penguin.png', 0,0, 0)
+while game:
+    window.blit(background,(0,0))
+    mx,my=mouse.get_pos()
+    hero.rect.x = mx
+    hero.rect.y = my
+    hero.reset()
+    
+    '''while finish != True:
+
+        for e in event.get():
+            if e.type == QUIT:
+                game = False
+        clock = time.Clock()
+        
+        ball.reset()
+        ball.update()
+
+        for hero in Players:
+            hero.update()
+            hero.reset()
+            if sprite.collide_rect(ball, hero):
+                ball.speed_x*=-1
+
+        if ball.rect.x <=0:
+            finish = True
+            window.blit(lose,(150,200))
+        if ball.rect.x >=675:
+            finish = True
+            window.blit(lose2,(150,200))
+        clock.tick(FPS)
+        display.update()'''
+
+    for e in event.get():
+        if e.type == QUIT:
+            game = False
+    keys_pressed = key.get_pressed()
+    if keys_pressed[K_ESCAPE]:
+        game = False
+    clock.tick(FPS)
+    display.update()
